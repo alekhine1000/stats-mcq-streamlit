@@ -64,9 +64,7 @@ if st.button("Submit", type="primary", disabled=submit_disabled):
             st.session_state.attempt = 2
         else:
             st.error("Your answer is incorrect.")
-            # Explicit correct answer letter + reason
-            st.write(f"Correct answer: {letter(correct)}.")
-            st.write(q["final_explanation"])
+            st.write(f"Correct answer: {letter(correct)}. {q['final_explanation']}")
             st.session_state.locked = True
 
 if st.session_state.locked:
