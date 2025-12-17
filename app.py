@@ -51,7 +51,7 @@ if st.button("Submit", type="primary", disabled=submit_disabled):
         if st.session_state.attempt == 1:
             st.success("Correct.")
         else:
-            st.success("Correct (second attempt).")
+            st.success("Correct.")
         st.write(q["feedback_correct"])
         st.session_state.locked = True
 
