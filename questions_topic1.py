@@ -1,5 +1,4 @@
 QUESTIONS = [
-
 {
 "id": "T1_Q1",
 "question": "Which of the following is qualitative (categorical) data?",
@@ -13,7 +12,8 @@ QUESTIONS = [
 3: "Age is numerical and is treated as quantitative."
 },
 "final_explanation": "Correct answer: C. Blood group consists of categories rather than numerical measurements, so it is qualitative (nominal) data."
-},
+}
+]
 
 {
 "id": "T1_Q2",
