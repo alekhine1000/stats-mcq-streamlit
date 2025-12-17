@@ -4,7 +4,7 @@ QUESTIONS = [
         "question": "Which of the following is qualitative (categorical) data?",
         "options": ["Height", "Weight", "Blood group", "Age"],
         "correct": 2,
-        "hint": "Consider whether the variable represents categories or numerical measurements.",
+        "hint": "Hint:Consider whether the variable represents categories or numerical measurements.",
         "feedback_correct": "Blood group is categorical and therefore qualitative data.",
         "feedback_wrong": {
             0: "Height is measured numerically and is quantitative data.",
@@ -18,7 +18,7 @@ QUESTIONS = [
         "question": "The number of students in a class is best classified as:",
         "options": ["Nominal data", "Ordinal data", "Quantitative discrete data", "Quantitative continuous data"],
         "correct": 2,
-        "hint": "Ask whether the variable can take fractional values.",
+        "hint": "Hint:Ask yourself whether the variable can take fractional values.",
         "feedback_correct": "This variable is a count and is therefore quantitative discrete data.",
         "feedback_wrong": {
             0: "Nominal data are categories, not numerical counts.",
@@ -32,7 +32,7 @@ QUESTIONS = [
         "question": "Which variable is quantitative continuous?",
         "options": ["Number of cars owned", "Letter grade (A, B, C)", "Time taken to complete a task", "Number of absences"],
         "correct": 2,
-        "hint": "Continuous variables are measured and can take decimal values.",
+        "hint": "Hint:Continuous variables are measured and can take decimal values.",
         "feedback_correct": "Time can take any value within a range, so it is quantitative continuous.",
         "feedback_wrong": {
             0: "Number of cars is a count and is discrete.",
@@ -46,7 +46,7 @@ QUESTIONS = [
         "question": "Gender is measured on which level of measurement?",
         "options": ["Nominal", "Ordinal", "Interval", "Ratio"],
         "correct": 0,
-        "hint": "Nominal variables are categories with no natural order.",
+        "hint": "Hint:Nominal variables are categories with no natural order.",
         "feedback_correct": "Gender consists of categories with no inherent order, so it is nominal.",
         "feedback_wrong": {
             1: "Ordinal data require ranking; gender categories have no ranking.",
@@ -60,7 +60,7 @@ QUESTIONS = [
         "question": "Satisfaction level measured as “Very dissatisfied” to “Very satisfied” is best classified as:",
         "options": ["Nominal", "Ordinal", "Interval", "Ratio"],
         "correct": 1,
-        "hint": "Check whether the categories can be ranked.",
+        "hint": "Hint:Check whether the categories can be ranked.",
         "feedback_correct": "The categories have a natural order, making the data ordinal.",
         "feedback_wrong": {
             0: "Nominal categories have no order.",
@@ -74,7 +74,7 @@ QUESTIONS = [
         "question": "Which of the following is an example of nominal data?",
         "options": ["Blood type (A, B, AB, O)", "Class position (1st, 2nd, 3rd)", "Temperature in °C", "Weight (kg)"],
         "correct": 0,
-        "hint": "Nominal data are categories with no order.",
+        "hint": "Hint:Nominal data are categories with no order.",
         "feedback_correct": "Blood type is categorical with no natural order, so it is nominal.",
         "feedback_wrong": {
             1: "Class position is ranked, so it is ordinal.",
@@ -88,7 +88,7 @@ QUESTIONS = [
         "question": "Which of the following is an example of ordinal data?",
         "options": ["Hair colour", "Movie rating (1–5 stars)", "Height", "Age"],
         "correct": 1,
-        "hint": "Ordinal data are ordered categories (ranked).",
+        "hint": "Hint:Ordinal data are ordered categories (ranked).",
         "feedback_correct": "Movie ratings are ordered categories, so they are ordinal.",
         "feedback_wrong": {
             0: "Hair colour is nominal (no order).",
@@ -102,7 +102,7 @@ QUESTIONS = [
         "question": "Which of the following is quantitative discrete data?",
         "options": ["Time taken to travel to campus", "Number of siblings", "Body temperature", "Distance travelled"],
         "correct": 1,
-        "hint": "Discrete data are counted and take whole-number values.",
+        "hint": "Hint:Discrete data are counted and take whole-number values.",
         "feedback_correct": "Number of siblings is a count, so it is quantitative discrete.",
         "feedback_wrong": {
             0: "Time is measured and typically continuous.",
@@ -116,7 +116,7 @@ QUESTIONS = [
         "question": "Which level of measurement describes numerical data with equal intervals but no true zero?",
         "options": ["Nominal", "Ordinal", "Interval", "Ratio"],
         "correct": 2,
-        "hint": "Interval scales have equal spacing but do not have an absolute zero.",
+        "hint": "Hint:Interval scales have equal spacing but do not have an absolute zero.",
         "feedback_correct": "Interval data have equal intervals but no true zero.",
         "feedback_wrong": {
             0: "Nominal data are categories without order.",
@@ -130,7 +130,7 @@ QUESTIONS = [
         "question": "Temperature measured in degrees Celsius (°C) is classified as:",
         "options": ["Nominal", "Ordinal", "Interval", "Ratio"],
         "correct": 2,
-        "hint": "Consider whether the scale has equal intervals and a true zero.",
+        "hint": "Hint:Consider whether the scale has equal intervals and a true zero.",
         "feedback_correct": "Celsius temperature has equal intervals but no true zero, so it is interval data.",
         "feedback_wrong": {
             0: "Celsius temperature is numerical, not categorical.",
@@ -144,7 +144,7 @@ QUESTIONS = [
         "question": "Which of the following is an example of ratio data?",
         "options": ["Year of birth", "Temperature in °C", "Weight", "Letter grade (A, B, C)"],
         "correct": 2,
-        "hint": "Ratio data have a true zero and allow meaningful ratio statements.",
+        "hint": "Hint:Ratio data have a true zero and allow meaningful ratio statements.",
         "feedback_correct": "Weight has a true zero and supports ratio comparisons, so it is ratio data.",
         "feedback_wrong": {
             0: "Years are interval data, not ratio data.",
@@ -158,7 +158,7 @@ QUESTIONS = [
         "question": "For which type of data is it generally appropriate to calculate the mean?",
         "options": ["Nominal", "Ordinal", "Interval", "Nominal and ordinal"],
         "correct": 2,
-        "hint": "The mean requires numerical data with meaningful intervals.",
+        "hint": "Hint:The mean requires numerical data with meaningful intervals.",
         "feedback_correct": "Interval data are numerical with meaningful differences, so the mean is appropriate.",
         "feedback_wrong": {
             0: "Nominal data are categories, so the mean is not meaningful.",
@@ -172,7 +172,7 @@ QUESTIONS = [
         "question": "Which measure of central tendency is most appropriate for nominal data?",
         "options": ["Mean", "Median", "Mode", "Range"],
         "correct": 2,
-        "hint": "For nominal categories, frequency-based summaries are appropriate.",
+        "hint": "Hint:For nominal categories, frequency-based summaries are appropriate.",
         "feedback_correct": "Mode identifies the most frequent category and is appropriate for nominal data.",
         "feedback_wrong": {
             0: "Mean requires numerical data.",
@@ -186,7 +186,7 @@ QUESTIONS = [
         "question": "Which statement about ordinal data is correct?",
         "options": ["Differences between values are equal", "The data can be ranked", "A true zero exists", "The mean is always appropriate"],
         "correct": 1,
-        "hint": "Ordinal data support ordering (ranking), but intervals are not equal.",
+        "hint": "Hint:Ordinal data support ordering (ranking), but intervals are not equal.",
         "feedback_correct": "Ordinal data can be ranked, but equal intervals are not guaranteed.",
         "feedback_wrong": {
             0: "Equal intervals are a property of interval/ratio scales.",
@@ -200,7 +200,7 @@ QUESTIONS = [
         "question": "Which variable is incorrectly classified?",
         "options": ["Height – continuous", "Age – continuous", "Number of siblings – continuous", "Income – ratio"],
         "correct": 2,
-        "hint": "Check whether the variable can take fractional values.",
+        "hint": "Hint:Check whether the variable can take fractional values.",
         "feedback_correct": "Number of siblings is a count and should be classified as discrete, not continuous.",
         "feedback_wrong": {
             0: "Height is measured on a continuous scale, so this classification is correct.",
@@ -214,7 +214,7 @@ QUESTIONS = [
         "question": "Which level of measurement allows meaningful statements such as “twice as much”?",
         "options": ["Nominal", "Ordinal", "Interval", "Ratio"],
         "correct": 3,
-        "hint": "Ratio data have a true zero and allow multiplication/division comparisons.",
+        "hint": "Hint:Ratio data have a true zero and allow multiplication/division comparisons.",
         "feedback_correct": "Ratio data support meaningful ratio comparisons because they have a true zero.",
         "feedback_wrong": {
             0: "Nominal data are categories without numerical meaning.",
@@ -228,7 +228,7 @@ QUESTIONS = [
         "question": "Likert-scale responses (1–5) are best classified as:",
         "options": ["Nominal", "Ordinal", "Interval", "Ratio"],
         "correct": 1,
-        "hint": "Likert scales have order, but equal spacing is not guaranteed.",
+        "hint": "Hint:Likert scales have order, but equal spacing is not guaranteed.",
         "feedback_correct": "Likert-scale responses are ordered categories, so they are best treated as ordinal.",
         "feedback_wrong": {
             0: "There is a natural order, so nominal is not best.",
@@ -242,7 +242,7 @@ QUESTIONS = [
         "question": "Which variable may be classified differently depending on how it is recorded?",
         "options": ["Gender", "Blood group", "Age", "Education level"],
         "correct": 3,
-        "hint": "Some variables can be recorded as categories or as numbers.",
+        "hint": "Hint:Some variables can be recorded as categories or as numbers.",
         "feedback_correct": "Education level can be recorded in different ways, which can change its classification.",
         "feedback_wrong": {
             0: "Gender is typically recorded as nominal categories.",
@@ -256,7 +256,7 @@ QUESTIONS = [
         "question": "Which operation is not meaningful for ordinal data?",
         "options": ["Ranking", "Finding the mode", "Finding the median", "Calculating differences"],
         "correct": 3,
-        "hint": "Ordinal data do not have equal intervals.",
+        "hint": "Hint:Ordinal data do not have equal intervals.",
         "feedback_correct": "Differences between ordinal categories are not meaningful because spacing is not measured.",
         "feedback_wrong": {
             0: "Ranking is meaningful for ordinal data.",
@@ -270,7 +270,7 @@ QUESTIONS = [
         "question": "Which statement best describes interval data?",
         "options": ["Categories with a natural order", "Numerical data with a true zero", "Numerical data with equal intervals but no true zero", "Categories with no natural order"],
         "correct": 2,
-        "hint": "Interval scales have equal spacing but no absolute zero.",
+        "hint": "Hint:Interval scales have equal spacing but no absolute zero.",
         "feedback_correct": "Interval data have equal intervals but no true zero.",
         "feedback_wrong": {
             0: "This describes ordinal data.",
