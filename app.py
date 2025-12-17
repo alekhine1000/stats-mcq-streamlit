@@ -3,6 +3,7 @@ from questions_topic1 import QUESTIONS
 
 st.set_page_config(page_title="Topic 1: Data Types MCQ", page_icon="📊")
 
+# ---- Initialise session state ----
 if "idx" not in st.session_state:
     st.session_state.idx = 0
     st.session_state.attempt = 1
@@ -16,11 +17,15 @@ def next_question():
     if "choice" in st.session_state:
         del st.session_state["choice"]
 
-st.title("📊 Topic 1: Data Types & Classification")
-st.caption("MCQ practice with one hint and one retry.")
+def letter(i: int) -> str:
+    return "ABCD"[i]
 
+st.title("Topic 1: Data Types and Data Classification")
+st.caption("MCQ practice (two attempts per question).")
+
+# End condition
 if st.session_state.idx >= len(QUESTIONS):
-    st.success(f"Finished! Score: {st.session_state.score} / {len(QUESTIONS)}")
+    st.success(f"Finished. Score: {st.session_state.score} / {len(QUESTIONS)}")
     if st.button("Restart"):
         for k in list(st.session_state.keys()):
             del st.session_state[k]
@@ -32,24 +37,35 @@ q = QUESTIONS[st.session_state.idx]
 st.subheader(f"Question {st.session_state.idx + 1}")
 st.write(q["question"])
 
-choice = st.radio("Choose one:", q["options"], key="choice")
+# IMPORTANT: index=None removes the default pre-selected option
+choice = st.radio("Choose one:", q["options"], index=None, key="choice")
 
-if st.button("Submit", type="primary"):
+submit_disabled = choice is None or st.session_state.locked
+
+if st.button("Submit", type="primary", disabled=submit_disabled):
     selected = q["options"].index(choice)
+    correct = q["correct"]
 
-    if selected == q["correct"]:
+    if selected == correct:
         st.session_state.score += 1
-        st.success("✔ Well done!")
+        if st.session_state.attempt == 1:
+            st.success("Correct.")
+        else:
+            st.success("Correct (second attempt).")
         st.write(q["feedback_correct"])
         st.session_state.locked = True
+
     else:
         if st.session_state.attempt == 1:
-            st.warning("❌ Good attempt — try once more.")
-            st.write(q["feedback_wrong"].get(selected, "❌ Not quite."))
+            st.warning("Your answer is incorrect. Please try again.")
+            # Option-specific feedback (formal)
+            st.write(q["feedback_wrong"].get(selected, "Your answer is incorrect."))
             st.info(q["hint"])
             st.session_state.attempt = 2
         else:
-            st.error("❌ That’s okay — let’s learn and move on.")
+            st.error("Your answer is incorrect.")
+            # Explicit correct answer letter + reason
+            st.write(f"Correct answer: {letter(correct)}.")
             st.write(q["final_explanation"])
             st.session_state.locked = True
 
