@@ -107,7 +107,7 @@ if st.button("Generate AI question", key="ai_generate_btn"):
         gen = generate_mcq(
             topic=ai_topic,
             bloom_level=ai_bloom,
-            difficulty=ai_difficulty
+            difficulty=3
         )
 
         st.session_state["ai_question"] = {
