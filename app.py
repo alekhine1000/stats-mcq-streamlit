@@ -2,6 +2,10 @@ import streamlit as st
 from questions_topic1 import QUESTIONS
 from gemini_mcq import generate_mcq  # must be the fixed version (google.generativeai)
 
+# 🛠️ TEACHER SHORTCUT — only active with ?debug=true in URL
+if st.query_params.get("debug") == "true":
+    st.session_state.idx = len(QUESTIONS)  # only skips UI, not safety
+
 st.set_page_config(page_title="Topic 1: Data Types MCQ", page_icon="📊")
 
 # ---- Initialise session state ----
