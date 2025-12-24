@@ -19,15 +19,24 @@ if "serving_ai" not in st.session_state:
 
 
 def next_question():
-    # If an AI question is queued, serve it next (do NOT advance idx)
+    """
+    True-next behavior:
+    - If an AI question is queued (pending_ai=True) and we're not serving it yet,
+      then Next question switches into serving_ai without advancing idx.
+    - If we are serving an AI question, Next question clears it and returns to manual bank.
+    - Otherwise, Next question advances the manual bank idx.
+    """
+    # Serve queued AI next (do NOT advance idx)
     if st.session_state.get("pending_ai", False) and not st.session_state.get("serving_ai", False):
         st.session_state.serving_ai = True
+
     else:
         # If we just finished an AI question, clear it and return to normal bank
         if st.session_state.get("serving_ai", False):
             st.session_state.serving_ai = False
             st.session_state.pending_ai = False
             st.session_state.pop("ai_question", None)
+
         else:
             # Normal progression through the fixed question bank
             st.session_state.idx += 1
@@ -45,67 +54,76 @@ def letter(i: int) -> str:
 st.title("Topic 1: Data Types and Data Classification")
 st.caption("MCQ practice (two attempts per question).")
 
-# End condition (only finish if no AI is queued/serving)
+# ---- Finished manual bank message (do NOT stop the app) ----
 if (
     st.session_state.idx >= len(QUESTIONS)
     and not st.session_state.get("pending_ai", False)
     and not st.session_state.get("serving_ai", False)
 ):
-    st.success(f"Finished. Score: {st.session_state.score} / {len(QUESTIONS)}")
+    st.success(f"Finished the fixed bank. Score: {st.session_state.score} / {len(QUESTIONS)}")
+    st.info("You can keep practising using **AI Practice Question** below, or click **Restart** to redo the fixed bank.")
     if st.button("Restart"):
         for k in list(st.session_state.keys()):
             del st.session_state[k]
         st.rerun()
-    st.stop()
 
-# Select the current question
+# ---- Select the current question ----
+q = None
+
 if st.session_state.get("serving_ai", False) and "ai_question" in st.session_state:
     q = st.session_state["ai_question"]
     st.caption("🤖 AI-generated question (practice)")
-else:
+elif st.session_state.idx < len(QUESTIONS):
     q = QUESTIONS[st.session_state.idx]
-
-# Header label (optional clarity)
-label_num = st.session_state.idx + 1
-if st.session_state.get("serving_ai", False):
-    st.subheader(f"AI Practice Question (after Q{label_num})")
 else:
-    st.subheader(f"Question {label_num}")
+    q = None
 
-st.write(q["question"])
+# ---- Quiz UI (only if we have a question to show) ----
+if q is not None:
+    label_num = st.session_state.idx + 1
 
-# IMPORTANT: index=None removes the default pre-selected option
-choice = st.radio("Choose one:", q["options"], index=None, key="choice")
-
-submit_disabled = choice is None or st.session_state.locked
-
-if st.button("Submit", type="primary", disabled=submit_disabled):
-    selected = q["options"].index(choice)
-    correct = q["correct"]
-
-    if selected == correct:
-        st.session_state.score += 1
-        st.success("Correct.")
-        st.write(q["feedback_correct"])
-        st.session_state.locked = True
+    if st.session_state.get("serving_ai", False):
+        st.subheader(f"AI Practice Question (after Q{label_num})")
     else:
-        if st.session_state.attempt == 1:
-            st.warning("Your answer is incorrect. Please try again.")
-            st.write(q["feedback_wrong"].get(selected, "Your answer is incorrect."))
-            st.info(q["hint"])
-            st.session_state.attempt = 2
-        else:
-            st.error("Your answer is incorrect.")
-            st.write(f"Correct answer: {letter(correct)}. {q['final_explanation']}")
+        st.subheader(f"Question {label_num}")
+
+    st.write(q["question"])
+
+    # IMPORTANT: index=None removes the default pre-selected option
+    choice = st.radio("Choose one:", q["options"], index=None, key="choice")
+
+    submit_disabled = choice is None or st.session_state.locked
+
+    if st.button("Submit", type="primary", disabled=submit_disabled):
+        selected = q["options"].index(choice)
+        correct = q["correct"]
+
+        if selected == correct:
+            st.session_state.score += 1
+            st.success("Correct.")
+            st.write(q["feedback_correct"])
             st.session_state.locked = True
+        else:
+            if st.session_state.attempt == 1:
+                st.warning("Your answer is incorrect. Please try again.")
+                st.write(q["feedback_wrong"].get(selected, "Your answer is incorrect."))
+                st.info(q["hint"])
+                st.session_state.attempt = 2
+            else:
+                st.error("Your answer is incorrect.")
+                st.write(f"Correct answer: {letter(correct)}. {q['final_explanation']}")
+                st.session_state.locked = True
 
-if st.session_state.locked:
-    if st.session_state.get("pending_ai", False) and not st.session_state.get("serving_ai", False):
-        st.info("🤖 An AI question is queued and will appear after you click Next question.")
+    if st.session_state.locked:
+        if st.session_state.get("pending_ai", False) and not st.session_state.get("serving_ai", False):
+            st.info("🤖 An AI question is queued and will appear after you click Next question.")
 
-    if st.button("Next question"):
-        next_question()
-        st.rerun()
+        if st.button("Next question"):
+            next_question()
+            st.rerun()
+
+else:
+    st.info("Fixed question bank completed. Generate an AI question below to continue practising.")
 
 # ---------------- AI PRACTICE QUESTION ----------------
 st.divider()
