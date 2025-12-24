@@ -139,6 +139,8 @@ if st.button("Generate AI question", key="ai_generate_btn"):
         st.session_state["pending_ai"] = True
 
         st.success("AI question generated. It will be used as the next question.")
+        st.rerun()
+
 
     except Exception as e:
         st.error(str(e))
