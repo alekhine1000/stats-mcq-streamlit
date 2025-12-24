@@ -101,11 +101,6 @@ ai_bloom = st.selectbox(
     key="ai_bloom_select"
 )
 
-ai_difficulty = st.slider(
-    "Difficulty",
-    1, 5, 2,
-    key="ai_difficulty_slider"
-)
 
 if st.button("Generate AI question", key="ai_generate_btn"):
     try:
