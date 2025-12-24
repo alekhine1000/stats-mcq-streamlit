@@ -92,7 +92,7 @@ def generate_mcq(topic: str, bloom_level: int, difficulty: int = 2) -> Dict[str,
             "final_explanation": {"type": "string"},
         },
         "required": ["question", "options", "correct_index", "hint", "feedback_correct", "feedback_wrong", "final_explanation"],
-        "additionalProperties": False,
+        
     }
 
     # ---- Guardrails prompt (Bloom + your style) ----
