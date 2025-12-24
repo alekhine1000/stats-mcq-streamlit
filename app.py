@@ -64,11 +64,7 @@ if st.session_state.idx >= len(QUESTIONS) and not st.session_state.get("pending_
     st.stop()
 
 
-# Use AI question if one is queued; otherwise use the normal bank
-if st.session_state.get("pending_ai", False) and "ai_question" in st.session_state:
-    q = st.session_state["ai_question"]
-    st.caption("🤖 AI-generated question (practice)")
-else:
+# Select the current question
 if st.session_state.get("serving_ai", False) and "ai_question" in st.session_state:
     q = st.session_state["ai_question"]
     st.caption("🤖 AI-generated question (practice)")
