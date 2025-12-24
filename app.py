@@ -1,7 +1,7 @@
 import streamlit as st
 from questions_topic1 import QUESTIONS
 
-st.write("Gemini key loaded:", "GEMINI_API_KEY" in st.secrets)
+# st.write("Gemini key loaded:", "GEMINI_API_KEY" in st.secrets)
 
 st.set_page_config(page_title="Topic 1: Data Types MCQ", page_icon="📊")
 
