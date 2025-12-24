@@ -73,108 +73,64 @@ if st.session_state.locked:
     if st.button("Next question"):
         next_question()
         st.rerun()
-from gemini_mcq import generate_mcq
-
-import time
-from gemini_mcq import generate_mcq
-
 import time
 from gemini_mcq import generate_mcq
 
 st.divider()
 st.subheader("AI Practice Question")
 
-topic = st.selectbox(
+ai_topic = st.selectbox(
     "Topic for AI question",
     [
         "Data types & measurement",
         "Central tendency",
         "Outliers & boxplots",
         "Skewness & normality"
-    ]
+    ],
+    key="ai_topic_select"
 )
 
-bloom = st.selectbox(
+ai_bloom = st.selectbox(
     "Bloom level",
     [1, 2, 3],
     format_func=lambda x: {
         1: "1 Knowledge",
         2: "2 Understanding",
         3: "3 Application"
-    }[x]
+    }[x],
+    key="ai_bloom_select"
 )
 
-difficulty = st.slider("Difficulty", 1, 5, 2)
+ai_difficulty = st.slider(
+    "Difficulty",
+    1, 5, 2,
+    key="ai_difficulty_slider"
+)
 
-if st.button("Generate AI question"):
+if st.button("Generate AI question", key="ai_generate_btn"):
     try:
-        q = generate_mcq(
-            topic=topic,
-            bloom_level=bloom,
-            difficulty=difficulty
+        gen = generate_mcq(
+            topic=ai_topic,
+            bloom_level=ai_bloom,
+            difficulty=ai_difficulty
         )
 
-        new_item = {
+        st.session_state["ai_question"] = {
             "id": f"AI_{int(time.time())}",
-            "question": q["question"],
-            "options": q["options"],
-            "correct": q["correct_index"],
-            "hint": q["hint"],
-            "feedback_correct": q["feedback_correct"],
-            "feedback_wrong": {int(k): v for k, v in q["feedback_wrong"].items()},
-            "final_explanation": q["final_explanation"],
+            "question": gen["question"],
+            "options": gen["options"],
+            "correct": gen["correct_index"],
+            "hint": gen["hint"],
+            "feedback_correct": gen["feedback_correct"],
+            "feedback_wrong": {int(k): v for k, v in gen["feedback_wrong"].items() if str(k).isdigit()},
+            "final_explanation": gen["final_explanation"],
         }
 
-        st.session_state["ai_question"] = new_item
-        st.success("AI question generated. Scroll up to answer it.")
+        st.success("AI question generated. It will be used as the next question.")
 
     except Exception as e:
         st.error(str(e))
 
-
-topic = st.selectbox(
-    "Topic for AI question",
-    [
-        "Data types & measurement",
-        "Central tendency",
-        "Outliers & boxplots",
-        "Skewness & normality"
-    ]
-)
-
-bloom = st.selectbox(
-    "Bloom level",
-    [1, 2, 3],
-    format_func=lambda x: {
-        1: "1 Knowledge",
-        2: "2 Understanding",
-        3: "3 Application"
-    }[x]
-)
-
-difficulty = st.slider("Difficulty", 1, 5, 2)
-
-if st.button("Generate AI question"):
-    try:
-        q = generate_mcq(
-            topic=topic,
-            bloom_level=bloom,
-            difficulty=difficulty
-        )
-
-        new_item = {
-            "id": f"AI_{int(time.time())}",
-            "question": q["question"],
-            "options": q["options"],
-            "correct": q["correct_index"],
-            "hint": q["hint"],
-            "feedback_correct": q["feedback_correct"],
-            "feedback_wrong": {int(k): v for k, v in q["feedback_wrong"].items()},
-            "final_explanation": q["final_explanation"],
-        }
-
-        st.session_state["ai_question"] = new_item
-        st.success("AI question generated. Scroll up to answer it.")
 
     except Exception as e:
         st.error(str(e))
