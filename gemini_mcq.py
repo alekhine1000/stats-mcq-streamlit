@@ -88,11 +88,21 @@ def generate_mcq(topic: str, bloom_level: int, difficulty: int = 2) -> Dict[str,
         "correct_index": {"type": "integer", "minimum": 0, "maximum": 3},
         "hint": {"type": "string"},
         "feedback_correct": {"type": "string"},
-        "feedback_wrong": {"type": "object"},
+        "feedback_wrong": {
+            "type": "object",
+            "properties": {
+                "0": {"type": "string"},
+                "1": {"type": "string"},
+                "2": {"type": "string"},
+                "3": {"type": "string"}
+            },
+            "required": ["0", "1", "2", "3"]
+        },
         "final_explanation": {"type": "string"},
     },
     "required": ["question", "options", "correct_index", "hint", "feedback_correct", "feedback_wrong", "final_explanation"],
 }
+
 
 
     # ---- Guardrails prompt (Bloom + your style) ----
