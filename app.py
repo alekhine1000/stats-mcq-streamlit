@@ -13,11 +13,19 @@ if "idx" not in st.session_state:
     st.session_state.locked = False
 
 def next_question():
-    st.session_state.idx += 1
+    # If we just served an AI question, clear it and return to the normal bank
+    if st.session_state.get("pending_ai", False):
+        st.session_state.pending_ai = False
+        if "ai_question" in st.session_state:
+            del st.session_state["ai_question"]
+    else:
+        st.session_state.idx += 1
+
     st.session_state.attempt = 1
     st.session_state.locked = False
     if "choice" in st.session_state:
         del st.session_state["choice"]
+
 
 def letter(i: int) -> str:
     return "ABCD"[i]
@@ -26,7 +34,8 @@ st.title("Topic 1: Data Types and Data Classification")
 st.caption("MCQ practice (two attempts per question).")
 
 # End condition
-if st.session_state.idx >= len(QUESTIONS):
+# End condition (only finish if no pending AI question)
+if st.session_state.idx >= len(QUESTIONS) and not st.session_state.get("pending_ai", False):
     st.success(f"Finished. Score: {st.session_state.score} / {len(QUESTIONS)}")
     if st.button("Restart"):
         for k in list(st.session_state.keys()):
@@ -34,7 +43,14 @@ if st.session_state.idx >= len(QUESTIONS):
         st.rerun()
     st.stop()
 
-q = QUESTIONS[st.session_state.idx]
+
+# Use AI question if one is queued; otherwise use the normal bank
+if st.session_state.get("pending_ai", False) and "ai_question" in st.session_state:
+    q = st.session_state["ai_question"]
+    st.caption("🤖 AI-generated question (practice)")
+else:
+    q = QUESTIONS[st.session_state.idx]
+
 
 st.subheader(f"Question {st.session_state.idx + 1}")
 st.write(q["question"])
@@ -120,6 +136,7 @@ if st.button("Generate AI question", key="ai_generate_btn"):
             "feedback_wrong": {int(k): v for k, v in gen["feedback_wrong"].items() if str(k).isdigit()},
             "final_explanation": gen["final_explanation"],
         }
+        st.session_state["pending_ai"] = True
 
         st.success("AI question generated. It will be used as the next question.")
 
