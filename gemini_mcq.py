@@ -81,19 +81,19 @@ def generate_mcq(topic: str, bloom_level: int, difficulty: int = 2) -> Dict[str,
 
     # ---- Strict JSON schema we want back ----
     schema = {
-        "type": "object",
-        "properties": {
-            "question": {"type": "string"},
-            "options": {"type": "array", "items": {"type": "string"}, "minItems": 4, "maxItems": 4},
-            "correct_index": {"type": "integer", "minimum": 0, "maximum": 3},
-            "hint": {"type": "string"},
-            "feedback_correct": {"type": "string"},
-            "feedback_wrong": {"type": "object", "additionalProperties": {"type": "string"}},
-            "final_explanation": {"type": "string"},
-        },
-        "required": ["question", "options", "correct_index", "hint", "feedback_correct", "feedback_wrong", "final_explanation"],
-        
-    }
+    "type": "object",
+    "properties": {
+        "question": {"type": "string"},
+        "options": {"type": "array", "items": {"type": "string"}, "minItems": 4, "maxItems": 4},
+        "correct_index": {"type": "integer", "minimum": 0, "maximum": 3},
+        "hint": {"type": "string"},
+        "feedback_correct": {"type": "string"},
+        "feedback_wrong": {"type": "object"},
+        "final_explanation": {"type": "string"},
+    },
+    "required": ["question", "options", "correct_index", "hint", "feedback_correct", "feedback_wrong", "final_explanation"],
+}
+
 
     # ---- Guardrails prompt (Bloom + your style) ----
     prompt = f"""
