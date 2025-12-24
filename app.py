@@ -73,3 +73,18 @@ if st.session_state.locked:
     if st.button("Next question"):
         next_question()
         st.rerun()
+from gemini_mcq import generate_mcq
+
+st.divider()
+st.subheader("AI Practice Question (Test)")
+
+if st.button("Generate AI question (test)"):
+    try:
+        q = generate_mcq(
+            topic="Data types and measurement",
+            bloom_level=3,
+            difficulty=2
+        )
+        st.json(q)
+    except Exception as e:
+        st.error(str(e))
