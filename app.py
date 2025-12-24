@@ -78,8 +78,59 @@ from gemini_mcq import generate_mcq
 import time
 from gemini_mcq import generate_mcq
 
+import time
+from gemini_mcq import generate_mcq
+
 st.divider()
 st.subheader("AI Practice Question")
+
+topic = st.selectbox(
+    "Topic for AI question",
+    [
+        "Data types & measurement",
+        "Central tendency",
+        "Outliers & boxplots",
+        "Skewness & normality"
+    ]
+)
+
+bloom = st.selectbox(
+    "Bloom level",
+    [1, 2, 3],
+    format_func=lambda x: {
+        1: "1 Knowledge",
+        2: "2 Understanding",
+        3: "3 Application"
+    }[x]
+)
+
+difficulty = st.slider("Difficulty", 1, 5, 2)
+
+if st.button("Generate AI question"):
+    try:
+        q = generate_mcq(
+            topic=topic,
+            bloom_level=bloom,
+            difficulty=difficulty
+        )
+
+        new_item = {
+            "id": f"AI_{int(time.time())}",
+            "question": q["question"],
+            "options": q["options"],
+            "correct": q["correct_index"],
+            "hint": q["hint"],
+            "feedback_correct": q["feedback_correct"],
+            "feedback_wrong": {int(k): v for k, v in q["feedback_wrong"].items()},
+            "final_explanation": q["final_explanation"],
+        }
+
+        st.session_state["ai_question"] = new_item
+        st.success("AI question generated. Scroll up to answer it.")
+
+    except Exception as e:
+        st.error(str(e))
+
 
 topic = st.selectbox(
     "Topic for AI question",
