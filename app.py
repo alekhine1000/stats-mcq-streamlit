@@ -3,8 +3,6 @@ import time
 from questions_topic1 import QUESTIONS
 from gemini_mcq import generate_mcq
 
-# st.write("Gemini key loaded:", "GEMINI_API_KEY" in st.secrets)
-
 st.set_page_config(page_title="Topic 1: Data Types MCQ", page_icon="📊")
 
 # ---- Initialise session state ----
@@ -13,13 +11,15 @@ if "idx" not in st.session_state:
     st.session_state.attempt = 1
     st.session_state.score = 0
     st.session_state.locked = False
+
 if "pending_ai" not in st.session_state:
     st.session_state.pending_ai = False
 if "serving_ai" not in st.session_state:
     st.session_state.serving_ai = False
 
+
 def next_question():
-    # If an AI question is queued, serve it next
+    # If an AI question is queued, serve it next (do NOT advance idx)
     if st.session_state.get("pending_ai", False) and not st.session_state.get("serving_ai", False):
         st.session_state.serving_ai = True
     else:
@@ -27,42 +27,36 @@ def next_question():
         if st.session_state.get("serving_ai", False):
             st.session_state.serving_ai = False
             st.session_state.pending_ai = False
-            if "ai_question" in st.session_state:
-                del st.session_state["ai_question"]
+            st.session_state.pop("ai_question", None)
         else:
             # Normal progression through the fixed question bank
             st.session_state.idx += 1
 
+    # Reset per-question state
     st.session_state.attempt = 1
     st.session_state.locked = False
-    if "choice" in st.session_state:
-        del st.session_state["choice"]
-
-    else:
-        st.session_state.idx += 1
-
-    st.session_state.attempt = 1
-    st.session_state.locked = False
-    if "choice" in st.session_state:
-        del st.session_state["choice"]
+    st.session_state.pop("choice", None)
 
 
 def letter(i: int) -> str:
     return "ABCD"[i]
 
+
 st.title("Topic 1: Data Types and Data Classification")
 st.caption("MCQ practice (two attempts per question).")
 
-# End condition
-# End condition (only finish if no pending AI question)
-if st.session_state.idx >= len(QUESTIONS) and not st.session_state.get("pending_ai", False) and not st.session_state.get("serving_ai", False):
+# End condition (only finish if no AI is queued/serving)
+if (
+    st.session_state.idx >= len(QUESTIONS)
+    and not st.session_state.get("pending_ai", False)
+    and not st.session_state.get("serving_ai", False)
+):
     st.success(f"Finished. Score: {st.session_state.score} / {len(QUESTIONS)}")
     if st.button("Restart"):
         for k in list(st.session_state.keys()):
             del st.session_state[k]
         st.rerun()
     st.stop()
-
 
 # Select the current question
 if st.session_state.get("serving_ai", False) and "ai_question" in st.session_state:
@@ -71,8 +65,13 @@ if st.session_state.get("serving_ai", False) and "ai_question" in st.session_sta
 else:
     q = QUESTIONS[st.session_state.idx]
 
-    
-st.subheader(f"Question {st.session_state.idx + 1}")
+# Header label (optional clarity)
+label_num = st.session_state.idx + 1
+if st.session_state.get("serving_ai", False):
+    st.subheader(f"AI Practice Question (after Q{label_num})")
+else:
+    st.subheader(f"Question {label_num}")
+
 st.write(q["question"])
 
 # IMPORTANT: index=None removes the default pre-selected option
@@ -86,17 +85,12 @@ if st.button("Submit", type="primary", disabled=submit_disabled):
 
     if selected == correct:
         st.session_state.score += 1
-        if st.session_state.attempt == 1:
-            st.success("Correct.")
-        else:
-            st.success("Correct.")
+        st.success("Correct.")
         st.write(q["feedback_correct"])
         st.session_state.locked = True
-
     else:
         if st.session_state.attempt == 1:
             st.warning("Your answer is incorrect. Please try again.")
-            # Option-specific feedback (formal)
             st.write(q["feedback_wrong"].get(selected, "Your answer is incorrect."))
             st.info(q["hint"])
             st.session_state.attempt = 2
@@ -106,14 +100,22 @@ if st.button("Submit", type="primary", disabled=submit_disabled):
             st.session_state.locked = True
 
 if st.session_state.locked:
+    if st.session_state.get("pending_ai", False) and not st.session_state.get("serving_ai", False):
+        st.info("🤖 An AI question is queued and will appear after you click Next question.")
+
     if st.button("Next question"):
         next_question()
         st.rerun()
-import time
-from gemini_mcq import generate_mcq
 
+# ---------------- AI PRACTICE QUESTION ----------------
 st.divider()
 st.subheader("AI Practice Question")
+
+# Optional cooldown status (matches your 8s guardrail)
+last = st.session_state.get("last_gen_time", 0.0)
+remaining = int(8 - (time.time() - last))
+if remaining > 0:
+    st.info(f"⏳ Please wait {remaining} second(s) before generating another AI question.")
 
 ai_topic = st.selectbox(
     "Topic for AI question",
@@ -121,29 +123,24 @@ ai_topic = st.selectbox(
         "Data types & measurement",
         "Central tendency",
         "Outliers & boxplots",
-        "Skewness & normality"
+        "Skewness & normality",
     ],
-    key="ai_topic_select"
+    key="ai_topic_select",
 )
 
 ai_bloom = st.selectbox(
     "Bloom level",
     [1, 2, 3],
-    format_func=lambda x: {
-        1: "1 Knowledge",
-        2: "2 Understanding",
-        3: "3 Application"
-    }[x],
-    key="ai_bloom_select"
+    format_func=lambda x: {1: "1 Knowledge", 2: "2 Understanding", 3: "3 Application"}[x],
+    key="ai_bloom_select",
 )
-
 
 if st.button("Generate AI question", key="ai_generate_btn"):
     try:
         gen = generate_mcq(
             topic=ai_topic,
             bloom_level=ai_bloom,
-            difficulty=3
+            difficulty=3,  # hidden from students
         )
 
         st.session_state["ai_question"] = {
@@ -158,13 +155,7 @@ if st.button("Generate AI question", key="ai_generate_btn"):
         }
         st.session_state.pending_ai = True
 
-        st.success("AI question generated. It will appear after you click Next question.")
-        st.rerun()
-
-
-    except Exception as e:
-        st.error(str(e))
-
+        st.success("✅ AI question queued. Finish the current question and click Next question to see it.")
 
     except Exception as e:
         st.error(str(e))
